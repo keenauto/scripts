@@ -1,5 +1,7 @@
 # Install base needs and java 17
-sudo apt-get update && sudo apt-get install openjdk-8-jre-headless jsvc gpg -y
+sudo apt-get update && sudo apt-get install openjdk-8-jdk jsvc gpg -y
+
+curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
 
 
 # Download the latest TP-Link Omada software controller
