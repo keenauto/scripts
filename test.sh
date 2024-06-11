@@ -8,4 +8,4 @@ sudo wget https://static.tp-link.com/upload/software/2024/202402/20240227/Omada_
 
 tar xvf Omada_SDN_Controller_v5.13.30.8_linux_x64.tar.gz
 cd Omada_SDN_Controller_v5.13.30.8_linux_x64
-./install.sh
+./install.sh -y
