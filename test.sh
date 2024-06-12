@@ -1,18 +1,30 @@
-apt-get install openjdk-8-jre-headless jsvc curl -y
+#Install MongoDB(V7)
+apt-get install gnupg curl
 
-wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1-1ubuntu2.1~18.04.23_amd64.deb
+#Import the MongoDB public GPG key
+curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
 
-dpkg -i libssl1.1_1.1.1-1ubuntu2.1~18.04.23_amd64.deb
+#Create the list file /etc/apt/sources.list.d/mongodb-org-7.0.list for your version of Ubuntu
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
 
-wget -qO - https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -
+#Reload local package database
+apt-get update
 
-echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/4.4 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.4.list
-
+#Install latest stable verison
 apt-get install mongodb-org -y
+
+#Install java 17
+apt-get install openjdk-17-jre-headless -y
+
+#Create directory that Omada requires
+mkdir /usr/lib/jvm/java-17-openjdk-amd64/lib/amd64
+
+#Link the default directory to new directory
+ln -s /usr/lib/jvm/java-17-openjdk-amd64/lib/server /usr/lib/jvm/java-17-openjdk-amd64/lib/amd64/
+
+#Install JSVC
+apt-get install jsvc -y
 
 wget https://static.tp-link.com/upload/software/2024/202402/20240227/Omada_SDN_Controller_v5.13.30.8_linux_x64.deb
 
 dpkg -i Omada_SDN_Controller_v5.13.30.8_Linux_x64.deb
-
-
-
