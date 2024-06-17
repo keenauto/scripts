@@ -1,26 +1,27 @@
 #!/bin/bash
+
 # Define an array of server IP addresses or hostnames
-servers=("server1.example.com" "server2.example.com" "server3.example.com")
+ips=($(cat ip.txt))
 
 # Your SSH public key file (assuming it's ~/.ssh/id_rsa.pub)
-public_key_file="~/.ssh/id_rsa.pub"
+public_key_file=~/.ssh/id_ed25519.pub
 
 # Prompt for the SSH user's password
 read -s -p "Enter your SSH password: " ssh_password
 echo
 
 # Loop through each server and copy the public key
-for server in "${servers[@]}"; do
+for server in ${ips[@]}; do
     echo "Copying public key to $server..."
     
     # Use sshpass to provide the password and copy the public key to the remote server
-    sshpass -p "$ssh_password" ssh "$server" "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys" < "$public_key_file"
+    sshpass -p $ssh_password ssh-copy-id -i $public_key_file -o StrictHostKeyChecking=no root@$server
     
     if [ $? -eq 0 ]; then
         echo "Public key copied to $server."
     else
         echo "Failed to copy public key to $server."
-    fi
+    fi   
 done
 
 # Clear the password variable
